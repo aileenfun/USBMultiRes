@@ -1,6 +1,10 @@
 #include "StdAfx.h"
 
 #include "DataProcess.h"
+#include <opencv.hpp>
+#include <opencv2\contrib\contrib.hpp>
+#include <opencv\highgui.h>
+#include <opencv\cv.hpp>
 
 #define MSG_CMD_DESTORY		0
 #define MSG_CMD_SINGLE		1
@@ -143,31 +147,38 @@ int CDataProcess::ProcessData()
 {
 	if(!m_bEnd)
 	{
-		ByteToRGB(m_In,m_Out);
+		cv::Mat frame(g_height,g_width,CV_8UC1,m_In);
+		cv::Mat colored(g_height,g_width,CV_8UC3);
+		cv::applyColorMap(frame,colored,cv::COLORMAP_JET);
+		cv::imshow("disp",frame);
+		cv::imshow("color",colored);
+		cv::waitKey(10);
+		
+		//ByteToRGB(m_In,m_Out);
 
-		switch(m_ProcType)
-		{
-		case Xmirror_Proc:
-			DoXmirrorProc();
-			break;
-		case Ymirror_Proc:
-			DoYmirrorProc();
-			break;
-		case XYmirror_Proc:
-			DoXmirrorProc();
-			DoYmirrorProc();
-			break;
-		case Normal_Proc:
-		default:
-			break;
-		}
-		CreateBmpFile();
-		m_BitmapInfo.bmiHeader.biSizeImage=g_width*g_height*3;//图片实际数据字节数
-		m_BitmapInfo.bmiHeader.biWidth=g_width;
-		m_BitmapInfo.bmiHeader.biHeight= g_height;
-		StretchDIBits(m_pDisplay->GetMemDC()->m_hDC,0,0,g_width,g_height,0,0,g_width,g_height,m_Out,&m_BitmapInfo,DIB_RGB_COLORS,SRCCOPY);
-		//StretchDIBits(m_pDisplay->GetMemDC()->m_hDC,0,0,1280,720,0,0,g_height,g_width,m_Out,&m_BitmapInfo,DIB_RGB_COLORS,SRCCOPY);
-		m_pDisplay->Display();
+		//switch(m_ProcType)
+		//{
+		//case Xmirror_Proc:
+		//	DoXmirrorProc();
+		//	break;
+		//case Ymirror_Proc:
+		//	DoYmirrorProc();
+		//	break;
+		//case XYmirror_Proc:
+		//	DoXmirrorProc();
+		//	DoYmirrorProc();
+		//	break;
+		//case Normal_Proc:
+		//default:
+		//	break;
+		//}
+		//CreateBmpFile();
+		//m_BitmapInfo.bmiHeader.biSizeImage=g_width*g_height*3;//图片实际数据字节数
+		//m_BitmapInfo.bmiHeader.biWidth=g_width;
+		//m_BitmapInfo.bmiHeader.biHeight= g_height;
+		//StretchDIBits(m_pDisplay->GetMemDC()->m_hDC,0,0,g_width,g_height,0,0,g_width,g_height,m_Out,&m_BitmapInfo,DIB_RGB_COLORS,SRCCOPY);
+		////StretchDIBits(m_pDisplay->GetMemDC()->m_hDC,0,0,1280,720,0,0,g_height,g_width,m_Out,&m_BitmapInfo,DIB_RGB_COLORS,SRCCOPY);
+		//m_pDisplay->Display();
 		memset(m_In,0,sizeof(m_In));
 		memset(m_Out,0,sizeof(m_Out));
 	}
