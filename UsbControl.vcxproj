@@ -99,7 +99,6 @@
   <ItemGroup>
     <None Include="ReadMe.txt" />
     <None Include="res\UsbControl.ico" />
-    <None Include="res\UsbControl.rc2" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CyUsb.h" />

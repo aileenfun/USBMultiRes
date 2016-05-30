@@ -16,9 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
-    <None Include="res\UsbControl.rc2">
-      <Filter>资源文件</Filter>
-    </None>
     <None Include="res\UsbControl.ico">
       <Filter>资源文件</Filter>
     </None>
